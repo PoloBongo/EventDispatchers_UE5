@@ -8,9 +8,11 @@ do
     # permet de les parcourir
     echo "$FILES" | while read STATUS FILE; do
         # A = added
-        if [ "$STATUS" = "A" ] && echo "$FILE" | grep -q '^Content/'; then
-            echo "❌ Veuillez retirer vos dossiers/fichiers dans Content/ ! Merci de les placer dans Content/CanyonCarnage/..."
-            exit 1
+        if [ "$STATUS" = "A" ]; then
+          if echo "$FILE" | grep -q '^Content/' && ! echo "$FILE" | grep -q '^Content/CanyonCarnage/'; then
+              echo "❌ Veuillez retirer vos dossiers/fichiers dans Content/ ! Merci de les placer dans Content/CanyonCarnage/..."
+              exit 1
+          fi
         fi
     done
 done
