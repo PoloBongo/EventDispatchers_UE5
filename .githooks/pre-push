@@ -1,0 +1,8 @@
+#!/bin/sh
+CHANGED=$(git diff --cached --name-only)
+for FILE in $CHANGED; do
+  if echo "$FILE" | grep -q '^Content/'; then
+    echo "❌ You cannot push changes in Content/ folder!"
+    exit 1
+  fi
+done
