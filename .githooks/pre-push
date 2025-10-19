@@ -1,15 +1,15 @@
 #!/bin/sh
-# Vérifie uniquement les fichiers ajoutés ou modifiés localement avant push
-echo "Pre-push hook running..."
 
 while read local_ref local_sha remote_ref remote_sha
 do
-    # Liste tous les fichiers modifiés dans les commits qui vont être poussés
-    FILES=$(git diff --name-only $remote_sha $local_sha)
+    # get les fichiers commits
+    FILES=$(git diff --name-status $remote_sha $local_sha)
     
-    for FILE in $FILES; do
-        if echo "$FILE" | grep -q '^Content/'; then
-            echo "❌ You cannot push files or folders in Content/!"
+    # permet de les parcourir
+    echo "$FILES" | while read STATUS FILE; do
+        # A = added
+        if [ "$STATUS" = "A" ] && echo "$FILE" | grep -q '^Content/'; then
+            echo "❌ Veuillez retirer vos dossiers/fichiers dans Content/ ! Merci de les placer dans Content/CanyonCarnage/..."
             exit 1
         fi
     done
